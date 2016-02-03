@@ -1,0 +1,9 @@
+{
+  "name": "Pratice2",
+  "description": "Pratice 2",
+  "dependencies": {
+    "frisby": "^0.8.5",
+    "jasmine-node": "^1.14.5"
+  }
+}
+
