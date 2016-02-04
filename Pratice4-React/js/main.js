@@ -31,8 +31,8 @@ t.alert();
  console.log(response);
  }).catch(function(err) {
  console.log(err);
- });
-*/
+ });*/
+
 
 var HelloMessage = React.createClass({
     render: function() {
@@ -56,12 +56,15 @@ var ListComponent = React.createClass({
             },
             mode: 'no-cors'
         }).then(function(response) {
+			//console.log(response.headers['transfer-encoding']);
+			//while(response.headers.get('Transfer-Encoding') == 'chunked')
+			//console.log(response);
             return response.json();
             //this.setState({data: response.body});
             //console.log(response.json());
-            /*var dataNodes = this.props.data.map(function(episode){
-                return (<LineComponent id={episode.id} title={episode.title} season={episode.season} episode={episode.episode}/> )
-            });*/
+            //var dataNodes = this.props.data.map(function(episode){
+            //    return (<LineComponent id={episode.id} title={episode.title} season={episode.season} episode={episode.episode}/> )
+            //});
         }).then(function (data) {
             console.log(data);
         }.bind(this)).catch(function(err) {
