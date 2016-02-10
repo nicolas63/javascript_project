@@ -1,73 +1,121 @@
 import React from 'react'
 import { render } from 'react-dom'
 
-class Tutu
-{
-    alert() {
-        console.log('Test Class');
-    }
-}
-
-var t = new Tutu();
-
-console.log('test basic');
-
-t.alert();
-
-/*
- fetch('http://localhost:9312', {
- method: 'post',
- headers : {
- 'Accept': 'application/json',
- 'Content-Type': 'application/json'
- },
- body: JSON.stringify({
- title: 'The Big Bang Theory',
- season: 1,
- episode: 1
- }),
- mode: 'no-cors'
- }).then(function(response) {
- console.log(response);
- }).catch(function(err) {
- console.log(err);
- });*/
-
-
-var HelloMessage = React.createClass({
-    render: function() {
-        return <div>Hello {this.props.name}</div>;
-    }
-});
-
 var LineComponent = React.createClass({
-    render: function() {
-        return <tr><td>{this.props.id} </td><td> {this.props.title} </td><td> {this.props.season} </td><td> {this.props.episode} </td></tr>;
+    render: function () {
+        return (<tr>
+            <td>{this.props.id} </td>
+            <td> {this.props.title} </td>
+            <td> {this.props.season} </td>
+            <td> {this.props.episode} </td>
+        </tr>);
     }
 });
 
 var ListComponent = React.createClass({
+    getInitialState: function () {
+        return {data: []};
+    },
+    render: function () {
+        var episodesNode = this.props.data.map(function (episode) {
+            return (<LineComponent id={episode.id} title={episode.title} season={episode.season}
+                                   episode={episode.episode}/>);
+        });
+        return (<table>
+            <thead>
+            <td>id</td>
+            <td>title</td>
+            <td>season</td>
+            <td>episode</td>
+            </thead>
+            <tbody> {episodesNode} </tbody>
+        </table>);
+    }
+});
+
+var FormComponent = React.createClass({
+    getInitialState: function () {
+        return {title: '', episode: '', season: ''};
+    },
+    handleTitleChange: function (e) {
+        this.setState({title: e.target.value});
+    },
+    handleEpisodeChange: function (e) {
+        this.setState({episode: e.target.value});
+    },
+    handleSeasonChange: function (e) {
+        this.setState({season: e.target.value});
+    },
+    handleSubmit: function (e) {
+        e.preventDefault();
+        var title = this.state.title.trim();
+        var episode = this.state.episode;
+        var season = this.state.season;
+        fetch('http://localhost:9312', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                season: season,
+                episode: episode
+            }),
+            mode: 'no-cors'
+        }).then(function (response) {
+            //console.log(response.text());
+            this.props.onEpisodeSubmit(data);
+            return response.json();
+        }.bind(this)).then(function (data) {
+            console.log(data);
+            this.props.onEpisodeSubmit(data);
+        }.bind(this)).catch(function (err) {
+            console.log(err);
+        });
+
+    },
+    render: function () {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label for="title">Title</label> <input type="text" id="title" name="title"
+                                                        onChange={this.handleTitleChange}/>
+                <label for="episode">Episode</label> <input type="number" id="episode" name="episode"
+                                                            onChange={this.handleEpisodeChange}/>
+                <label for="season">Season</label> <input type="number" id="season" name="season"
+                                                          onChange={this.handleSeasonChange}/>
+                <input type="submit" value="Watched"/>
+            </form>
+        );
+    }
+});
+
+var BoxComponent = React.createClass({
     loadComponentsFromServer: function () {
+        /*var xhr = new XMLHttpRequest();
+         var context = this;
+
+         xhr.onreadystatechange = function () {
+         console.log(xhr.responseText);
+         context.setState({data: xhr.responseText});
+         console.log(context.props.data);
+         };
+
+         xhr.open('GET','http://localhost:9312', true);
+         xhr.setRequestHeader('Accept','application/json');
+         xhr.setRequestHeader('Connection','keep-alive');
+         xhr.send();*/
         fetch(this.props.url, {
             method: 'GET',
             headers : {
                 'Accept': 'application/json',
                 'Connection': 'keep-alive'
-            },
-            mode: 'no-cors'
+            }
         }).then(function(response) {
-			//console.log(response.headers['transfer-encoding']);
-			//while(response.headers.get('Transfer-Encoding') == 'chunked')
-			//console.log(response);
             return response.json();
-            //this.setState({data: response.body});
-            //console.log(response.json());
-            //var dataNodes = this.props.data.map(function(episode){
-            //    return (<LineComponent id={episode.id} title={episode.title} season={episode.season} episode={episode.episode}/> )
-            //});
         }).then(function (data) {
-            console.log(data);
-        }.bind(this)).catch(function(err) {
+            this.setState({data: data});
+        }.bind(this)).catch(function (err) {
             console.log(err);
         });
     },
@@ -77,12 +125,21 @@ var ListComponent = React.createClass({
     componentDidMount: function () {
         this.loadComponentsFromServer();
     },
+    handleEpisodeSubmit: function (data) {
+        this.loadComponentsFromServer();
+        /*var newData = this.state.data;
+         newData.push(data);
+         console.log(newData);
+         this.setState({data: newData});*/
+    },
     render : function(){
-        return <table> <thead><td>id</td> <td>title</td> <td>season</td> <td>episode</td> </thead> <tbody> {this.state.data} </tbody> </table>
+        return (
+            <div>
+                <ListComponent data={this.state.data}/>
+                <FormComponent onEpisodeSubmit={this.handleEpisodeSubmit}/>
+            </div>
+        );
     }
 });
 
-//render(<HelloMessage name="John" />, document.getElementById('content'));
-
-render(<ListComponent url='http://localhost:9312'/>,document.getElementById('content'));
-//render(<LineComponent id="3" title="coucou" season="1" episode="1" />,document.getElementById('content'));
+render(<BoxComponent url='http://localhost:9312'/>, document.getElementById('content'));

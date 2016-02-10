@@ -1,4 +1,6 @@
+.idea/
 Pratice4-React/node_modules/
 Node_TP2/test/node_modules/
 Pratice4-React/bundle.js
 npm-debug.log
+/Pratice4-React/js/_savedFetch.js
