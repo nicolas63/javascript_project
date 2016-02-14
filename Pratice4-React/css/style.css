@@ -14,10 +14,14 @@
   clear: both;
 }
 
-.grid * {
+.grid [class^="col"], .grid [class*=" col"] {
   padding: 5px;
   display: inline-block;
   float: left;
+}
+
+table td {
+  word-wrap: break-word;
 }
 
 /* Large screen */
