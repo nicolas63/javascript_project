@@ -11,8 +11,8 @@ class Controller{
 		}
 		
 		var bodyResponse = JSON.stringify(this.episodes);
-		
-		response.writeHead(statusCode, {'Content-Type' : 'application/json', 'Content-Lenght': bodyResponse.length});
+
+        response.writeHead(statusCode, {'Content-Type': 'application/json', 'Content-Lenght': bodyResponse.length});
 		response.write(bodyResponse); 
 		response.end();
 	}
@@ -58,9 +58,9 @@ class Controller{
 			};
 			episodes.push(newEpisode);	
 			var bodyResponse = JSON.stringify(newEpisode);
-			response.writeHead(201, {'Content-Type' : 'application/json', 'Content-lenght': bodyResponse.length});
+            response.writeHead(201, {'Content-Type': 'application/json', 'Content-lenght': bodyResponse.length});
 			response.write(bodyResponse);
-			//response.write(`STATUS : 200`+`HEADERS: [{'Content-Type' : 'text/html', 'Connection': 'Keep-Alive', 'Transfer-Encoding': 'none', 'Content-Lenght': 1000}]`+ `BODY: ` + bodyResponse);
+            //response.write(`STATUS : 200`+`HEADERS: [{'Content-Type' : 'text/html', 'Connection': 'Keep-Alive', 'Transfer-Encoding': 'none', 'Content-Lenght': 1000}]`+ `BODY: ` + bodyResponse);
 			response.end();
 		});
 	}
