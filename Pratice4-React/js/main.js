@@ -22,17 +22,19 @@ var ListComponent = React.createClass({
             return (<LineComponent id={episode.id}
                                    title={episode.title}
                                    season={episode.season}
-                                   episode={episode.episode}/>);
+                                   episode={episode.episode} />);
         });
         return (
             <table className="col-7 col-10-m">
-                <thead>
-                <td className="col-3">id</td>
-                <td className="col-3">title</td>
-                <td className="col-2">season</td>
-                <td className="col-2">episode</td>
+                <thead className="col-10">
+                <tr  className="col-10">
+                    <td className="col-3">id</td>
+                    <td className="col-3">title</td>
+                    <td className="col-2">season</td>
+                    <td className="col-2">episode</td>
+                </tr>
                 </thead>
-                <tbody>{episodesNode}</tbody>
+                <tbody className="col-10">{episodesNode}</tbody>
             </table>);
     }
 });
@@ -82,21 +84,21 @@ var FormComponent = React.createClass({
                        id="title"
                        name="title"
                        className="col-10 col-5-m"
-                       onChange={this.handleTitleChange}/>
+                       onChange={this.handleTitleChange} />
 
                 <label for="episode" className="col-10 col-5-m">Episode</label>
                 <input type="number"
                        id="episode"
                        name="episode"
                        className="col-10 col-5-m"
-                       onChange={this.handleEpisodeChange}/>
+                       onChange={this.handleEpisodeChange} />
 
                 <label for="season" className="col-10 col-5-m">Season</label>
                 <input type="number"
                        id="season"
                        name="season"
                        className="col-10 col-5-m"
-                       onChange={this.handleSeasonChange}/>
+                       onChange={this.handleSeasonChange} />
                 <br/>
                 <input type="submit" value="Watched"/>
             </form>
@@ -145,8 +147,8 @@ var BoxComponent = React.createClass({
     render : function(){
         return (
             <div className="grid">
-                <ListComponent data={this.state.data}/>
-                <FormComponent url={this.props.url} onEpisodeSubmit={this.handleEpisodeSubmit}/>
+                <ListComponent data={this.state.data} />
+                <FormComponent url={this.props.url} onEpisodeSubmit={this.handleEpisodeSubmit} />
             </div>
         );
     }
