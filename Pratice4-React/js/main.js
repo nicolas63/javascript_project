@@ -3,12 +3,13 @@ import { render } from 'react-dom'
 
 var LineComponent = React.createClass({
     render: function () {
-        return (<tr>
-            <td>{this.props.id} </td>
-            <td> {this.props.title} </td>
-            <td> {this.props.season} </td>
-            <td> {this.props.episode} </td>
-        </tr>);
+        return (
+            <tr className="col-10">
+                <td className="col-3">{this.props.id}</td>
+                <td className="col-3">{this.props.title}</td>
+                <td className="col-2">{this.props.season}</td>
+                <td className="col-2">{this.props.episode}</td>
+            </tr>);
     }
 });
 
@@ -18,18 +19,21 @@ var ListComponent = React.createClass({
     },
     render: function () {
         var episodesNode = this.props.data.map(function (episode) {
-            return (<LineComponent id={episode.id} title={episode.title} season={episode.season}
+            return (<LineComponent id={episode.id}
+                                   title={episode.title}
+                                   season={episode.season}
                                    episode={episode.episode}/>);
         });
-        return (<table>
-            <thead>
-            <td>id</td>
-            <td>title</td>
-            <td>season</td>
-            <td>episode</td>
-            </thead>
-            <tbody> {episodesNode} </tbody>
-        </table>);
+        return (
+            <table className="col-7 col-10-m">
+                <thead>
+                <td className="col-3">id</td>
+                <td className="col-3">title</td>
+                <td className="col-2">season</td>
+                <td className="col-2">episode</td>
+                </thead>
+                <tbody>{episodesNode}</tbody>
+            </table>);
     }
 });
 
@@ -51,7 +55,7 @@ var FormComponent = React.createClass({
         var title = this.state.title.trim();
         var episode = this.state.episode;
         var season = this.state.season;
-        fetch('http://localhost:9312', {
+        fetch(this.props.url, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -63,13 +67,8 @@ var FormComponent = React.createClass({
                 episode: episode
             }),
             mode: 'no-cors'
-        }).then(function (response) {
-            //console.log(response.text());
-            this.props.onEpisodeSubmit(data);
-            return response.json();
-        }.bind(this)).then(function (data) {
-            console.log(data);
-            this.props.onEpisodeSubmit(data);
+        }).then(function () {
+            this.props.onEpisodeSubmit();
         }.bind(this)).catch(function (err) {
             console.log(err);
         });
@@ -77,13 +76,28 @@ var FormComponent = React.createClass({
     },
     render: function () {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label for="title">Title</label> <input type="text" id="title" name="title"
-                                                        onChange={this.handleTitleChange}/>
-                <label for="episode">Episode</label> <input type="number" id="episode" name="episode"
-                                                            onChange={this.handleEpisodeChange}/>
-                <label for="season">Season</label> <input type="number" id="season" name="season"
-                                                          onChange={this.handleSeasonChange}/>
+            <form onSubmit={this.handleSubmit} className="col-3 col-10-m">
+                <label for="title" className="col-10 col-5-m">Title</label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       className="col-10 col-5-m"
+                       onChange={this.handleTitleChange}/>
+
+                <label for="episode" className="col-10 col-5-m">Episode</label>
+                <input type="number"
+                       id="episode"
+                       name="episode"
+                       className="col-10 col-5-m"
+                       onChange={this.handleEpisodeChange}/>
+
+                <label for="season" className="col-10 col-5-m">Season</label>
+                <input type="number"
+                       id="season"
+                       name="season"
+                       className="col-10 col-5-m"
+                       onChange={this.handleSeasonChange}/>
+                <br/>
                 <input type="submit" value="Watched"/>
             </form>
         );
@@ -127,16 +141,12 @@ var BoxComponent = React.createClass({
     },
     handleEpisodeSubmit: function (data) {
         this.loadComponentsFromServer();
-        /*var newData = this.state.data;
-         newData.push(data);
-         console.log(newData);
-         this.setState({data: newData});*/
     },
     render : function(){
         return (
-            <div>
+            <div className="grid">
                 <ListComponent data={this.state.data}/>
-                <FormComponent onEpisodeSubmit={this.handleEpisodeSubmit}/>
+                <FormComponent url={this.props.url} onEpisodeSubmit={this.handleEpisodeSubmit}/>
             </div>
         );
     }
