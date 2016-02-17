@@ -1,5 +1,6 @@
 ﻿Contributors :
 HUTEAU Jonathan, 28 rue des petits gras, jonathan.huteau@etu.udamail.fr, 9 ans, 1 soeur, aucune
+RAYMOND Nicolas, 9 rue des chanelles, nicolas.raymond@etu.udamail.fr, 1 soeur, 1 
 
 1. Installer les dépendances de node avec npm install dans les dossiers server/test et front
 
