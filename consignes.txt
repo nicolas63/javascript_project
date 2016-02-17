@@ -1,0 +1,13 @@
+﻿ajax : 
+17/02/2016 23h59 NOMS_tar.gz (préciser binôme)
+- contributors (nom prénom adresse postale et mail âge du chien nombre de frères et soeurs grand-mère décédée ?)
+- server /
+ - js
+ - run_test.sh
+- front /
+ - js /
+ - node_modules /
+ - index.html
+ - webpack.config.js
+
+node_modules/.bin/webpack -w --config webpack.config.js
